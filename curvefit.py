@@ -7,7 +7,7 @@ from scipy.optimize import curve_fit
 from get_data import return_info
 
 fig, ax = plt.subplots(1,1, figsize=(9,6))
-next_ = 5
+next_ = 7
 
 y, days, dates = return_info()
 next_days = np.append(days, days[-1] + np.arange(1, next_ + 1))
@@ -24,11 +24,11 @@ def error(pcov):
 
     return error_ar
 
-(a, tau), pcov = curve_fit( fit, days, y)
+(a, tau), pcov = curve_fit(fit, days, y)
 
-print("Prediction in the next {} days:\n".format(next_))
-for i in range(1, next_+1):
-    print("Day {}: {}".format(days[-1] + i, int(a * np.exp((days[-1] + i)/tau))))
+# print("Prediction in the next {} days:\n".format(next_))
+# for i in range(1, next_+1):
+#     print("Day {}: {}".format(days[-1] + i, int(a * np.exp((days[-1] + i)/tau))))
 
 
 ax.set_title("COVID-19 India")
@@ -43,9 +43,10 @@ ax.scatter(next_days, fit(next_days, a, tau), color="magenta", label="Prediction
 ax.scatter(days, y, label="Actual case")
 
 ax.set_xlabel("Days")
-ax.set_xlim(0.5, days[-1] + next_)
+ax.set_xlim(days.min(), days[-1] + next_)
 ax.set_xticks(days)
 ax.set_xticklabels(dates, rotation=30)
+ax.locator_params(nbins=10, axis='x')
 ax.set_ylabel('Affected')
 
 ax.legend(loc=2)
